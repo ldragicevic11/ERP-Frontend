@@ -1,0 +1,9 @@
+.product-baner button {
+    position: absolute;
+    top: 75%;
+    left: 5%;
+}
+
+.product-baner.small-banner {
+    height: 500px;
+  }

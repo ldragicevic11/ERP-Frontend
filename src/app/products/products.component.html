@@ -1,0 +1,88 @@
+<div class="my-container mx-auto border border-dark">
+
+    <div class="border mb-5 p-3 d-flex justify-content-around">
+        <div class="btn-group" role="group">
+            <div>
+                <button type="button" class="btn btn-outline-secondary" [ngClass]="{'active': view === 'grid'}"
+                    (click)="view = 'grid'">Grid</button>
+            <button type="button" class="btn btn-outline-secondary" [ngClass]="{'active': view === 'list'}"
+                    (click)="view = 'list'">List</button>
+            </div>
+        </div>
+
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" 
+        data-bs-target="#productmodal" *ngIf="utilityService.isLoggedIn() && utilityService.isAdmin()">
+            Add Product
+        </button>
+
+        <div class="w-50 d-flex">
+            <span class="me-5 d-flex align-items-center fs-5 fw-bold">Sort By</span>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-secondary" [ngClass]="{'active': sortby === 'default'}"
+                    (click)="sortby = 'default'; sortByPrice(sortby)">
+                        Default
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" [ngClass]="{'active': sortby === 'htl'}"
+                    (click)="sortby = 'htl'; sortByPrice(sortby)">
+                        Price (High to Low)
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" [ngClass]="{'active': sortby === 'lth'}"
+                    (click)="sortby = 'lth'; sortByPrice(sortby)">
+                        Price (Low to High)
+                    </button>
+                </div>
+        </div>
+    </div>
+    
+    <div class="border p-5">
+        <!-- Grid View -->
+        <div class="grid-view" *ngIf="view === 'grid'">
+            <div class="row g-5">
+                <div class="col-3" *ngFor="let product of products | slice:(currentPage-1)*4:currentPage*4">
+                    <app-product [product]="product"></app-product>
+                </div>
+            </div>
+        </div>
+    
+        <!-- List View -->
+        <div class="list-view" *ngIf="view === 'list'">
+            <div class="row mb-5" *ngFor="let product of products | slice:(currentPage-1)*4:currentPage*4">
+                <div class="col">
+                    <app-product [view]="'list'" [product]="product"></app-product>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Paginacija -->
+        <div class="pagination">
+            <button class="btn btn-outline-dark" [disabled]="currentPage === 1" (click)="previousPage()">Back</button>
+            <span class="page-count"> {{ currentPage }} of {{ totalPages }} </span>
+            <button class="btn btn-outline-dark" [disabled]="currentPage === totalPages" (click)="nextPage()">Next</button>
+        </div>
+    </div>
+    
+    
+</div>
+
+<div class="modal fade" id="productmodal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" #modalTitle></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <app-add-product></app-add-product>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
